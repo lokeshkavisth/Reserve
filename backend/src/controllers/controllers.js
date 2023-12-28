@@ -1,7 +1,7 @@
 module.exports = {
-  createTrip: require("./createTrip"),
-  fetchTrips: require("./fetchTrips"),
-  createBooking: require("./createBooking"),
-  fetchBookings: require("./fetchBookings"),
+  createTrip: require("./trip/createTrip"),
+  fetchTrips: require("./trip/fetchTrips"),
+  createBooking: require("./booking/createBooking"),
+  fetchBookings: require("./booking/fetchBookings"),
   fetchLocations: require("./location/fetchLocations"),
 };
