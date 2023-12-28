@@ -3,19 +3,19 @@ import DropDown from "./ui/DropDown";
 import Input from "./ui/Input";
 import Button from "./ui/Button";
 import reserveAPI from "../api/api";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { getLocations, getTrips } from "../redux/actions/actions";
 import { useNavigate } from "react-router-dom";
+import toast, { Toaster } from "react-hot-toast";
 
 const Hero = () => {
   const [locations, setLocations] = React.useState([]);
   const [origin, setOrigin] = React.useState("");
   const [destination, setDestination] = React.useState("");
+  const [loading, setLoading] = React.useState(false);
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
-
-  const selector = useSelector((state) => state.reducer);
 
   React.useEffect(() => {
     const fetchLocations = async () => {
@@ -34,29 +34,41 @@ const Hero = () => {
   }, [dispatch]);
 
   const searchBus = async (e) => {
+    setLoading((prev) => !prev);
     e.preventDefault();
-    // console.log(e.target[2].value);
 
-    const params = {
-      origin,
-      destination,
-      departureDate: e.target[2].value,
-    };
+    try {
+      const params = {
+        origin,
+        destination,
+        departureDate: e.target[2].value,
+      };
 
-    const res = await reserveAPI({
-      method: "GET",
-      route: "/",
-      params,
-    });
+      const res = await reserveAPI({
+        method: "GET",
+        route: "/",
+        params,
+      });
 
-    dispatch(getTrips(res.trips));
-
-    navigate("/trips");
+      if (res && res.trips) {
+        dispatch(getTrips(res.trips));
+        navigate("/trips");
+      } else {
+        console.error("Unexpected response format:", res);
+      }
+    } catch (error) {
+      toast.error(error.response.data.error);
+      console.error("API request failed:", error);
+    } finally {
+      setLoading((prev) => !prev);
+    }
   };
-  // console.log("selector", selector);
 
   return (
-    <section className="py-20 md:py-40 ">
+    <section className="py-20 md:py-40">
+      <div>
+        <Toaster />
+      </div>
       <div className="space-y-10">
         <div>
           <h1 className="text-center">Book your bus tickets</h1>
@@ -94,7 +106,7 @@ const Hero = () => {
                 min={new Date().toISOString().split("T")[0]}
               />
             </section>
-            <Button text="Search Buses" type="submit" />
+            <Button text="Search Buses" type="submit" loading={loading} />
           </form>
         </div>
       </div>

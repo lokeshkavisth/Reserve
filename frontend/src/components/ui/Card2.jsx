@@ -1,4 +1,5 @@
 import React from "react";
+import SeatLayout from "../SeatLayout";
 import Button from "./Button";
 
 const Card2 = (props) => {
@@ -6,12 +7,17 @@ const Card2 = (props) => {
     busName,
     fare,
     amenities,
+    origin,
+    destination,
     categories,
     departureDate,
     arrivalDate,
     departureTime,
     arrivalTime,
+    id,
   } = props;
+
+  const [isSeatVisible, SetIsSeatVisible] = React.useState(false);
 
   const departureT = new Date(departureTime).toLocaleTimeString("en-US", {
     timeStyle: "short",
@@ -21,10 +27,10 @@ const Card2 = (props) => {
   });
 
   const tripDetails = {
-    departureDate: "2023-12-20T00:00:00.000Z",
-    departureTime: "2023-12-20T15:13:57.749Z",
-    arrivalDate: "2023-12-24T00:00:00.000Z",
-    arrivalTime: "2023-12-20T07:17:57.749Z",
+    departureDate,
+    departureTime,
+    arrivalDate,
+    arrivalTime,
   };
 
   const departureDateTime = new Date(tripDetails.departureDate).getTime();
@@ -48,71 +54,82 @@ const Card2 = (props) => {
     Math.floor((timeDifferenceInMs % (1000 * 60 * 60)) / (1000 * 60))
   );
 
+  const handleViewSeats = (tripId) => {
+    if (tripId === id) SetIsSeatVisible((prev) => !prev);
+  };
+
   return (
-    <article className="grid grid-cols-4 border p-4 rounded-md shadow-sm bg-white">
-      <section className="col-span-3 space-y-4">
-        <h2 className="text-xl font-semibold capitalize">{busName}</h2>
-        <div>
-          <ul className="flex items-center gap-2">
-            {categories?.map((category, i) => (
-              <li
-                key={i}
-                className="uppercase bg-gray-200 py-1 px-2 text-xs rounded border border-gray-300"
-              >
-                {category}
-              </li>
-            ))}
-          </ul>
-        </div>
+    <>
+      <article className="grid grid-cols-4 border p-4 rounded-md shadow-sm bg-white relative">
+        <section className="col-span-3 space-y-4">
+          <h2 className="text-xl font-semibold capitalize">{busName}</h2>
+          <div>
+            <ul className="flex items-center gap-2">
+              {categories?.map((category, i) => (
+                <li
+                  key={i}
+                  className="uppercase bg-gray-200 py-1 px-2 text-xs rounded border border-gray-300"
+                >
+                  {category}
+                </li>
+              ))}
+            </ul>
+          </div>
 
-        <div className="flex items-center gap-4">
-          <section className="text-gray-600">
-            <h3>Departure</h3>
-            <time dateTime="2023-01-10">
-              <p>{departureDate.split("T")[0]}</p>
-              <p className="text-xs">{departureT}</p>
-            </time>
-          </section>
+          <div className="flex items-center gap-4">
+            <section className="text-gray-600">
+              <h3>Departure</h3>
+              <time dateTime={departureDate.split("T")[0]}>
+                <p>{departureDate.split("T")[0]}</p>
+                <p className="text-xs">
+                  <em className="capitalize">{origin}</em> {departureT}
+                </p>
+              </time>
+            </section>
 
-          <section className="text-gray-600 flex items-centers gap-2">
-            <i>&#9473;&#9473;&#9473;&#9473;</i>
-            <p>
-              {days} days {hours} hrs {minutes} mins
-            </p>
-            <i>&#9473;&#9473;&#9473;&#9473;</i>
-          </section>
+            <section className="text-gray-600 flex items-centers gap-2">
+              <i>&#9473;&#9473;&#9473;&#9473;</i>
+              <p>
+                {days} days {hours} hrs {minutes} mins
+              </p>
+              <i>&#9473;&#9473;&#9473;&#9473;</i>
+            </section>
 
-          <section className="text-gray-600">
-            <h3>Arrival</h3>
-            <time dateTime="2023-01-10">
-              <p>{arrivalDate.split("T")[0]}</p>
-              <p className="text-xs">{arrivalT}</p>
-            </time>
-          </section>
-        </div>
+            <section className="text-gray-600">
+              <h3>Arrival</h3>
+              <time dateTime={arrivalDate.split("T")[0]}>
+                <p>{arrivalDate.split("T")[0]}</p>
+                <p className="text-xs">
+                  <em className="capitalize">{destination}</em> {arrivalT}
+                </p>
+              </time>
+            </section>
+          </div>
 
-        <div>
-          <ul className="flex items-center gap-2">
-            {amenities?.map((amenity, i) => (
-              <li
-                key={i}
-                className="uppercase bg-blue-200 border border-blue-300 py-1 px-2 text-xs rounded"
-              >
-                {amenity}
-              </li>
-            ))}
-          </ul>
-        </div>
-      </section>
-
-      <aside className="border-l col-span-1 p-4 flex flex-col items-center justify-center">
-        <h6 className="text-gray-600">Trip Cost</h6>
-        <h2 className="text-2xl font-semibold text-indigo-600 mb-4">
-          &#8377;{fare}
-        </h2>
-        <Button text="View Seat" />
-      </aside>
-    </article>
+          <div>
+            <ul className="flex items-center gap-2">
+              {amenities?.map((amenity, i) => (
+                <li
+                  key={i}
+                  className="uppercase bg-blue-200 border border-blue-300 py-1 px-2 text-xs rounded"
+                >
+                  {amenity}
+                </li>
+              ))}
+            </ul>
+          </div>
+        </section>
+        <aside className="border-l col-span-1 p-4 flex flex-col items-center justify-center">
+          <h6 className="text-gray-600">Trip Cost</h6>
+          <h2 className="text-2xl font-semibold text-indigo-600 mb-4">
+            &#8377;{fare}
+          </h2>
+          <Button text="View Seat" onClick={() => handleViewSeats(id)} />
+          <p className="text-xs mt-1 text-blue-500">all taxes included*</p>
+        </aside>
+      </article>
+      {isSeatVisible && <SeatLayout />}
+    </>
   );
 };
 

@@ -9,6 +9,8 @@ const SignUp = lazy(() => import("../pages/SignUp"));
 const SignIn = lazy(() => import("../pages/SignIn"));
 const Register = lazy(() => import("../pages/Register"));
 const Trips = lazy(() => import("../pages/Trips"));
+const ManageBuses = lazy(() => import("../pages/ManageBuses"));
+const Payment = lazy(() => import("../pages/Payment"));
 
 const pagesData = [
   {
@@ -16,19 +18,6 @@ const pagesData = [
     element: <Home />,
     title: "home",
   },
-  {
-    path: "/bookings",
-    element: <Booking />,
-    title: "booking",
-    requiresAuth: true,
-  },
-  {
-    path: "/register",
-    element: <Register />,
-    title: "register",
-    requiresAuth: true,
-  },
-
   {
     path: "/contact",
     element: <Contact />,
@@ -48,6 +37,30 @@ const pagesData = [
     path: "/trips",
     element: <Trips />,
     title: "trips",
+  },
+  {
+    path: "/bookings",
+    element: <Booking />,
+    title: "booking",
+    requiresAuth: true,
+  },
+  {
+    path: "/register",
+    element: <Register />,
+    title: "register",
+    requiresAuth: true,
+  },
+  {
+    path: "/manage-buses",
+    element: <ManageBuses />,
+    title: "manage-buses",
+    requiresAuth: true,
+  },
+  {
+    path: "/payment",
+    element: <Payment />,
+    title: "payment",
+    requiresAuth: true,
   },
 ];
 

@@ -2,13 +2,15 @@ import React from "react";
 import Select from "react-select";
 
 const DropDown = (props) => {
+  const { label, htmlFor, ...restProps } = props;
+
   return (
     <div>
-      <label htmlFor={props.htmlFor} className="mb-1 text-sm font-medium">
-        {props.label}
+      <label htmlFor={htmlFor} className="mb-1 text-sm font-medium">
+        {label}
       </label>
       <Select
-        {...props}
+        {...restProps}
         isSearchable
         isClearable
         classNames={{

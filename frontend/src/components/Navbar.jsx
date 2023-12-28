@@ -1,8 +1,8 @@
+import React from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { onAuthStateChanged, signOut } from "firebase/auth";
 import { useDispatch } from "react-redux";
 import Logo from "./Logo";
-import React from "react";
 import { getCurrentUser } from "../redux/actions/actions";
 import { Auth } from "../config/firebase";
 import Button from "./ui/Button";
@@ -32,7 +32,7 @@ const initialUserState = {
 
 const Navbar = () => {
   const [user, setUser] = React.useState(initialUserState);
-  // const [loading, setLoading] = React.useState(false);
+  const [loading, setLoading] = React.useState(false);
 
   const navigate = useNavigate();
   const { pathname } = useLocation();
@@ -42,6 +42,7 @@ const Navbar = () => {
   const toggleMenu = (e) => {
     const menu = document.getElementById("menu");
     e.target.classList.toggle("ring-2");
+    e.target.classList.toggle("ring-blue-500");
     menu.classList.toggle("hidden");
   };
 
@@ -66,12 +67,10 @@ const Navbar = () => {
   }, [dispatch]);
 
   const register = () => {
-    // setLoading((prev) => !prev);
+    setLoading((prev) => !prev);
     pathname === "/sign-in" ? navigate("/sign-up") : navigate("/sign-in");
-    // setLoading((prev) => !prev);
+    setLoading((prev) => !prev);
   };
-
-  /////////////////
 
   const logOut = async () => {
     // setLoading((prev) => !prev);
@@ -114,11 +113,12 @@ const Navbar = () => {
                 onClick={toggleMenu}
                 src={user.profile ? user.profile : fakeAvatar}
                 alt="profile"
-                className="h-8 w-8 rounded-lg object-cover object-center"
+                className="h-8 w-8 rounded-md object-cover object-center"
               />
+              {/* dropdown start  */}
               <div
                 id="menu"
-                className="min-w-max py-2 border bg-slate-100 hidden absolute right-0 mt-1 rounded-lg z-10"
+                className="min-w-max py-2 border bg-white hidden absolute right-0 mt-1 rounded-md z-10"
               >
                 <ul>
                   {user.username && (
@@ -128,28 +128,45 @@ const Navbar = () => {
                   )}
 
                   {user.uid && (
-                    <li className="hover:bg-slate-200 px-3 py-2">
-                      <Link to={"/register"}>Agent Regestration</Link>
-                    </li>
+                    <>
+                      <li>
+                        <Link
+                          to={"/register"}
+                          className="hover:bg-gray-100 px-3 py-2 block"
+                        >
+                          Agent Regestration
+                        </Link>
+                      </li>
+                      <li>
+                        <Link
+                          to={"/manage-buses"}
+                          className="hover:bg-gray-100 px-3 py-2 block"
+                        >
+                          Manage Buses
+                        </Link>
+                      </li>
+                    </>
                   )}
 
                   <li className=" px-3 py-2">
                     {user.uid.length > 1 ? (
                       <Button
                         onClick={logOut}
-                        className="py-2 text-sm"
+                        className="py-2"
                         text={"Sign-Out"}
                       />
                     ) : (
                       <Button
                         onClick={register}
-                        className="py-2 text-sm"
+                        loading={loading}
+                        className="py-2"
                         text={pathname === "/sign-in" ? "Sign-up" : "Register"}
                       />
                     )}
                   </li>
                 </ul>
               </div>
+              {/* dropdown end  */}
             </div>
           </div>
         </div>

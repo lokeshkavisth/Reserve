@@ -6,6 +6,7 @@ import Input from "../components/ui/Input";
 import Button from "../components/ui/Button";
 import reserveAPI from "../api/api";
 import { getTrips } from "../redux/actions/actions";
+import Skeleton from "../components/ui/Skeleton";
 
 const amenityOptions = [
   {
@@ -54,32 +55,33 @@ const categoryOptions = [
 ];
 
 const Trips = () => {
-  const [amenities, setAmenities] = React.useState([]);
-  const [categories, setCategories] = React.useState([]);
-  const [origin, setOrigin] = React.useState("");
-  const [destination, setDestination] = React.useState("");
+  const [origin, setOrigin] = React.useState(null);
+  const [destination, setDestination] = React.useState(null);
   const [arrivalDate, setArrivalDate] = React.useState("");
+  const [categories, setCategories] = React.useState([]);
+  const [amenities, setAmenities] = React.useState([]);
+  const [loading, setLoading] = React.useState(false);
 
   // const navigate = useNavigate();
   const dispatch = useDispatch();
 
   const selector = useSelector((state) => state.reducer);
   const { locations, trips } = selector;
-  console.log("selector", selector);
+  // console.log("selector", selector);
 
   const filterResults = async (e) => {
+    setLoading((prev) => !prev);
     e.preventDefault();
 
     const formValues = {};
     const formData = new FormData(e.target);
 
-    // formValues["uid"] = user.uid;
-    if (origin !== "") {
-      formValues["origin"] = origin.toLocaleLowerCase();
+    if (origin && origin.value) {
+      formValues["origin"] = origin.value.toLocaleLowerCase();
     }
 
-    if (destination !== "") {
-      formValues["destination"] = destination.toLocaleLowerCase();
+    if (destination && destination.value) {
+      formValues["destination"] = destination.value.toLocaleLowerCase();
     }
 
     if (amenities.length > 0) {
@@ -98,6 +100,7 @@ const Trips = () => {
         formValues[key] = value.toLocaleLowerCase();
       }
     });
+    console.log("s", origin?.value, destination?.value, formData);
 
     try {
       const res = await reserveAPI({
@@ -106,9 +109,14 @@ const Trips = () => {
         params: formValues,
       });
 
-      dispatch(getTrips(res.trips));
+      if (res && res.trips) {
+        dispatch(getTrips(res.trips));
+      }
     } catch (error) {
       console.error(error);
+      dispatch(getTrips([]));
+    } finally {
+      setLoading((prev) => !prev);
     }
   };
 
@@ -118,25 +126,45 @@ const Trips = () => {
     setArrivalDate(threeDaysLater.toISOString().split("T")[0]);
   };
 
+  const resetFilters = () => {
+    setOrigin(null);
+    setDestination(null);
+    setArrivalDate("");
+    setCategories([]);
+    setAmenities([]);
+
+    // Reset the form directly
+    const form = document.getElementById("filterForm");
+    form.reset();
+
+    // Clear dropdown selections
+    const dropdowns = form.querySelectorAll("select");
+    dropdowns.forEach((dropdown) => {
+      dropdown.value = null; // Set to null to clear the selection
+    });
+  };
+
   return (
     <section className="grid grid-cols-6 gap-2 items-start">
       {/* filters */}
-      <aside className="bg-white p-4 col-span-2 border rounded-md shadow-sm">
+      <aside className="bg-white p-4 col-span-2 border rounded-md shadow-sm sticky top-[75px]">
         {/* origin */}
-        <form className="space-y-8" onSubmit={filterResults}>
+        <form id="filterForm" className="space-y-8" onSubmit={filterResults}>
           <section className="space-y-4">
             <DropDown
               options={locations}
               label="Origin"
               placeholder="Select origin"
-              onChange={(origin) => setOrigin(origin.value)}
+              value={origin}
+              onChange={(data) => setOrigin(data)}
             />
             {/* destination  */}
             <DropDown
               options={locations}
               label="Destination"
               placeholder="Select destination"
-              onChange={(destination) => setDestination(destination.value)}
+              value={destination}
+              onChange={(data) => setDestination(data)}
             />
             {/* departure date  */}
             <Input
@@ -160,6 +188,7 @@ const Trips = () => {
               options={categoryOptions}
               label="Category"
               placeholder="Bus category"
+              value={categories}
               isMulti
               onChange={(category) => setCategories(category)}
             />
@@ -168,29 +197,51 @@ const Trips = () => {
               options={amenityOptions}
               label="Amenities"
               placeholder="Select an amenity"
+              value={amenities}
               isMulti
               onChange={(amenity) => setAmenities(amenity)}
             />
           </section>
-          <Button type="submit" text="Search" />
+          <div className="space-y-4">
+            <Button type="submit" text="Apply Filters" loading={loading} />
+            <Button
+              type="button"
+              text="Clear Selections"
+              className={"bg-red-500"}
+              onClick={resetFilters}
+            />
+          </div>
         </form>
       </aside>
 
       {/* trips */}
-      <div className="col-span-4 flex flex-col gap-2">
-        {trips.map((trip) => (
-          <Card2
-            key={trip._id}
-            busName={trip.busName}
-            amenities={trip.amenities}
-            categories={trip.categories}
-            fare={trip.fare}
-            arrivalDate={trip.arrivalDate}
-            departureDate={trip.departureDate}
-            departureTime={trip.departureTime}
-            arrivalTime={trip.arrivalTime}
-          />
-        ))}
+      <div className="col-span-4 flex flex-col gap-2 relative">
+        {trips.length > 0 ? (
+          loading ? (
+            <Skeleton />
+          ) : (
+            trips.map((trip) => (
+              <Card2
+                key={trip._id}
+                id={trip._id}
+                busName={trip.busName}
+                origin={trip.origin}
+                destination={trip.destination}
+                amenities={trip.amenities}
+                categories={trip.categories}
+                fare={trip.fare}
+                arrivalDate={trip.arrivalDate}
+                departureDate={trip.departureDate}
+                departureTime={trip.departureTime}
+                arrivalTime={trip.arrivalTime}
+              />
+            ))
+          )
+        ) : (
+          <div>
+            <p>No matching trips found!</p>
+          </div>
+        )}
       </div>
     </section>
   );

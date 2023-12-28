@@ -4,41 +4,8 @@ import Button from "../components/ui/Button";
 import DropDown from "../components/ui/DropDown";
 import reserveAPI from "../api/api";
 import { useSelector } from "react-redux";
-
-const seatOptions = [
-  { value: "A1", label: "A1" },
-  { value: "A2", label: "A2" },
-  { value: "A3", label: "A3" },
-  { value: "A4", label: "A4" },
-  { value: "A5", label: "A5" },
-  { value: "A6", label: "A6" },
-  { value: "A7", label: "A7" },
-  { value: "A8", label: "A8" },
-  { value: "A9", label: "A9" },
-  { value: "B1", label: "B1" },
-  { value: "B2", label: "B2" },
-  { value: "B3", label: "B3" },
-  { value: "B4", label: "B4" },
-  { value: "B5", label: "B5" },
-  { value: "B6", label: "B6" },
-  { value: "B7", label: "B7" },
-  { value: "B8", label: "B8" },
-  { value: "B9", label: "B9" },
-  { value: "C1", label: "C1" },
-  { value: "C2", label: "C2" },
-  { value: "C3", label: "C3" },
-  { value: "C4", label: "C4" },
-  { value: "C5", label: "C5" },
-  { value: "C6", label: "C6" },
-  { value: "C7", label: "C7" },
-  { value: "C8", label: "C8" },
-  { value: "C9", label: "C9" },
-  { value: "D1", label: "D1" },
-  { value: "D2", label: "D2" },
-  { value: "D3", label: "D3" },
-  { value: "D4", label: "D4" },
-  { value: "D5", label: "D5" },
-];
+import toast, { Toaster } from "react-hot-toast";
+import { seats as seatRows } from "../data/data.json";
 
 const amenityOptions = [
   {
@@ -90,26 +57,27 @@ const Register = () => {
   const [seats, setSeats] = React.useState([]);
   const [amenities, setAmenities] = React.useState([]);
   const [categories, setCategories] = React.useState([]);
-  const [origin, setOrigin] = React.useState("");
-  const [destination, setDestination] = React.useState("");
   const [arrivalDate, setArrivalDate] = React.useState("");
+  const [loading, setLoading] = React.useState(false);
   const selector = useSelector((state) => state.reducer);
 
   const register = async (e) => {
+    setLoading((prev) => !prev);
     e.preventDefault();
+    console.log("event", e);
 
     const formValues = {};
     const formData = new FormData(e.target);
 
     formValues["uid"] = selector.user.uid;
-    formValues["origin"] = origin;
-    formValues["destination"] = destination;
     formValues["seats"] = seats.map((seat) => seat.value);
     formValues["amenities"] = amenities.map((amenity) => amenity.value);
     formValues["categories"] = categories.map((category) => category.value);
 
     formData.forEach((value, key) => {
-      formValues[key] = value;
+      if (value !== "") {
+        formValues[key] = value.toLocaleLowerCase();
+      }
     });
 
     try {
@@ -119,9 +87,14 @@ const Register = () => {
         data: formValues,
       });
 
-      console.log("res", res);
+      if (res && res.trip) {
+        toast.success("Registration successful!");
+      }
     } catch (error) {
-      console.error(error);
+      console.error("API request failed:", error);
+    } finally {
+      setLoading((prev) => !prev);
+      console.log("Second", formValues);
     }
   };
 
@@ -133,6 +106,9 @@ const Register = () => {
 
   return (
     <section>
+      <div>
+        <Toaster />
+      </div>
       <div className="text-center mx-auto space-y-8 mb-20">
         <h1>Bus Agent Registration Portal</h1>
         <p>
@@ -164,16 +140,16 @@ const Register = () => {
             <DropDown
               options={selector.locations}
               label="Origin"
+              name="origin"
               placeholder="Origin"
               required
-              onChange={(origin) => setOrigin(origin.value)}
             />
             <DropDown
               options={selector.locations}
               label="Destination"
+              name="destination"
               placeholder="Destination"
               required
-              onChange={(destination) => setDestination(destination.value)}
             />
 
             <Input
@@ -228,7 +204,7 @@ const Register = () => {
             />
 
             <DropDown
-              options={seatOptions}
+              options={seatRows}
               label="Seats"
               placeholder="Select seats"
               required
@@ -245,7 +221,7 @@ const Register = () => {
             />
           </div>
 
-          <Button type="submit" text="Register your bus" />
+          <Button type="submit" text="Register your bus" loading={loading} />
         </form>
       </div>
     </section>

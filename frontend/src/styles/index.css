@@ -20,6 +20,13 @@
   h5 {
     @apply text-xs;
   }
+  p,
+  li {
+    @apply text-sm;
+  }
+  button {
+    @apply text-sm;
+  }
 }
 
 @layer utilities {
