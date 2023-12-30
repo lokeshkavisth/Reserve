@@ -3,10 +3,13 @@ import { seats } from "../data/data.json";
 import Button from "./ui/Button";
 import Checkbox from "./ui/Checkbox";
 import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { tripToBook } from "../redux/actions/actions";
 
-const SeatLayout = () => {
-  const navigate = useNavigate();
+const SeatLayout = (props) => {
   const [loading, setLoading] = React.useState(false);
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const selectSeats = (e) => {
     setLoading((prev) => !prev);
@@ -15,13 +18,20 @@ const SeatLayout = () => {
     const formValues = {};
     const formData = new FormData(e.target);
 
-    formData.forEach((value, key) => {
+    formData.forEach((value) => {
       if (value !== "") {
-        formValues[key] = value;
+        if (!formValues["seats"]) {
+          formValues["seats"] = [];
+        }
+        formValues["seats"].push(value);
       }
     });
 
-    console.log("formvalues", formValues);
+    const bookingData = { ...props, ...formValues };
+
+    // console.log("booking data", bookingData);
+
+    dispatch(tripToBook(bookingData));
     navigate("/payment");
     setLoading((prev) => !prev);
   };
@@ -58,7 +68,7 @@ const SeatLayout = () => {
           ))}
         </ul>
 
-        <Button text="Proceed To Book" type="submit" />
+        <Button text="Proceed To Book" type="submit" loading={loading} />
       </form>
     </section>
   );

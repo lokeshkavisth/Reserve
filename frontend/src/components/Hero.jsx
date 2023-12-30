@@ -76,7 +76,7 @@ const Hero = () => {
 
         <div>
           <form className="space-y-6" onSubmit={searchBus}>
-            <section className="grid grid-cols-3 gap-2">
+            <section className="grid grid-cols-1 sm:grid-cols-3 gap-2">
               <DropDown
                 options={locations}
                 label="Origin"

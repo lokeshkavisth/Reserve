@@ -10,7 +10,7 @@ const SignIn = lazy(() => import("../pages/SignIn"));
 const Register = lazy(() => import("../pages/Register"));
 const Trips = lazy(() => import("../pages/Trips"));
 const ManageBuses = lazy(() => import("../pages/ManageBuses"));
-const Payment = lazy(() => import("../pages/Payment"));
+const StripeContainer = lazy(() => import("../components/StripeContainer"));
 
 const pagesData = [
   {
@@ -58,7 +58,7 @@ const pagesData = [
   },
   {
     path: "/payment",
-    element: <Payment />,
+    element: <StripeContainer />,
     title: "payment",
     requiresAuth: true,
   },

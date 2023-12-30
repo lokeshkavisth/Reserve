@@ -15,6 +15,7 @@ const Card2 = (props) => {
     departureTime,
     arrivalTime,
     id,
+    isBtnShow = true,
   } = props;
 
   const [isSeatVisible, SetIsSeatVisible] = React.useState(false);
@@ -59,22 +60,28 @@ const Card2 = (props) => {
   };
 
   return (
-    <>
-      <article className="grid grid-cols-4 border p-4 rounded-md shadow-sm bg-white relative">
+    <div>
+      <section
+        className={`grid  ${
+          isBtnShow ? "grid-cols-4" : "grid-cols-1"
+        } border p-4 rounded-md shadow-sm bg-white relative`}
+      >
         <section className="col-span-3 space-y-4">
           <h2 className="text-xl font-semibold capitalize">{busName}</h2>
-          <div>
-            <ul className="flex items-center gap-2">
-              {categories?.map((category, i) => (
-                <li
-                  key={i}
-                  className="uppercase bg-gray-200 py-1 px-2 text-xs rounded border border-gray-300"
-                >
-                  {category}
-                </li>
-              ))}
-            </ul>
-          </div>
+          {categories && (
+            <div>
+              <ul className="flex items-center gap-2">
+                {categories?.map((category, i) => (
+                  <li
+                    key={i}
+                    className="uppercase bg-gray-200 py-1 px-2 text-xs rounded border border-gray-300"
+                  >
+                    {category}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
 
           <div className="flex items-center gap-4">
             <section className="text-gray-600">
@@ -106,30 +113,34 @@ const Card2 = (props) => {
             </section>
           </div>
 
-          <div>
-            <ul className="flex items-center gap-2">
-              {amenities?.map((amenity, i) => (
-                <li
-                  key={i}
-                  className="uppercase bg-blue-200 border border-blue-300 py-1 px-2 text-xs rounded"
-                >
-                  {amenity}
-                </li>
-              ))}
-            </ul>
-          </div>
+          {amenities && (
+            <div>
+              <ul className="flex items-center gap-2">
+                {amenities?.map((amenity, i) => (
+                  <li
+                    key={i}
+                    className="uppercase bg-blue-200 border border-blue-300 py-1 px-2 text-xs rounded"
+                  >
+                    {amenity}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
         </section>
-        <aside className="border-l col-span-1 p-4 flex flex-col items-center justify-center">
-          <h6 className="text-gray-600">Trip Cost</h6>
-          <h2 className="text-2xl font-semibold text-indigo-600 mb-4">
-            &#8377;{fare}
-          </h2>
-          <Button text="View Seat" onClick={() => handleViewSeats(id)} />
-          <p className="text-xs mt-1 text-blue-500">all taxes included*</p>
-        </aside>
-      </article>
-      {isSeatVisible && <SeatLayout />}
-    </>
+        {isBtnShow && (
+          <aside className="border-l col-span-1 p-4 flex flex-col items-center justify-center">
+            <h6 className="text-gray-600">Trip Cost</h6>
+            <h2 className="text-2xl font-semibold text-indigo-600 mb-4">
+              &#8377;{fare}
+            </h2>
+            <Button text="View Seat" onClick={() => handleViewSeats(id)} />
+            <p className="text-xs mt-1 text-blue-500">all taxes included*</p>
+          </aside>
+        )}
+      </section>
+      {isSeatVisible && <SeatLayout {...props} />}
+    </div>
   );
 };
 

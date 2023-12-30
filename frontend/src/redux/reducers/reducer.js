@@ -2,6 +2,7 @@ const initialState = {
   user: {},
   locations: [],
   trips: [],
+  booking: {},
 };
 
 const reducer = (state = initialState, action) => {
@@ -16,6 +17,9 @@ const reducer = (state = initialState, action) => {
 
     case "GET_TRIPS":
       return { ...state, trips: payload };
+
+    case "TRIP_TO_BOOK":
+      return { ...state, booking: payload };
 
     default:
       return state;

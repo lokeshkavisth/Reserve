@@ -19,7 +19,6 @@ const App = () => {
           <Router />
         </React.Suspense>
       </main>
-
       <Footer />
     </>
   );

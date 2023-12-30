@@ -64,7 +64,7 @@ const Footer = () => {
   return (
     <footer className="bg-white border-t">
       <article className="max-w-7xl mx-auto py-4 px-2">
-        <section className="flex justify-between border-b py-4">
+        <section className="flex flex-col sm:flex-row justify-between border-b py-4">
           <Logo />
           <nav className="flex gap-4">
             <div>
@@ -109,7 +109,7 @@ const Footer = () => {
           </nav>
         </section>
 
-        <section className="pt-4 flex items-center justify-between">
+        <section className="pt-4 flex flex-col sm:flex-row gap-2 items-center justify-between">
           <p>&copy; {currentYear} Reserve™. All Rights Reserved.</p>
           <nav>
             <ul className="flex items-center gap-4">

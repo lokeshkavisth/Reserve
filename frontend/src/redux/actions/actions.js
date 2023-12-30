@@ -18,3 +18,10 @@ export const getTrips = (trips) => {
     payload: trips,
   };
 };
+
+export const tripToBook = (booking) => {
+  return {
+    type: "TRIP_TO_BOOK",
+    payload: booking,
+  };
+};

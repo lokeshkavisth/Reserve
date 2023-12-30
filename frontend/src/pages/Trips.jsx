@@ -100,7 +100,7 @@ const Trips = () => {
         formValues[key] = value.toLocaleLowerCase();
       }
     });
-    console.log("s", origin?.value, destination?.value, formData);
+    // console.log("s", origin?.value, destination?.value, formData);
 
     try {
       const res = await reserveAPI({

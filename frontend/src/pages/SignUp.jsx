@@ -8,19 +8,21 @@ import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
 import { Auth } from "../config/firebase.js";
 import { PiUserDuotone } from "react-icons/pi";
 import { AiTwotoneLock } from "react-icons/ai";
+import React from "react";
+import Message from "../components/ui/Message.jsx";
 
 const SignUp = () => {
-  //  const [userError, setUserError] = React.useState('');
-  //  const [loading, setLoading] = React.useState(false);
+  const [userError, setUserError] = React.useState("");
+  const [loading, setLoading] = React.useState(false);
   const navigate = useNavigate();
 
   const signUp = async (e) => {
+    setLoading((prev) => !prev);
     e.preventDefault();
     const username = e.target[0].value;
     const email = e.target[1].value;
     const password = e.target[2].value;
     // console.log(username, email, password);
-    // setLoading((prev) => !prev);
 
     await createUserWithEmailAndPassword(Auth, email, password)
       .then(({ user }) => {
@@ -34,12 +36,10 @@ const SignUp = () => {
       })
       .catch((error) => {
         console.log("error", error);
-        // setUserError(
-        //   "Email already in use, please try to signIn or try with diffrent email"
-        // );
+        setUserError("Email already in use, please try with diffrent email");
       });
 
-    // setLoading((prev) => !prev);
+    setLoading((prev) => !prev);
   };
 
   return (
@@ -74,7 +74,8 @@ const SignUp = () => {
             placeholder="Fake@123"
             icon={<AiTwotoneLock />}
           />
-          <Button type="submit" text="SignUp" />
+          {userError && <Message message={userError} />}
+          <Button type="submit" text="SignUp" loading={loading} />
         </form>
         <GoogleAuth />
       </div>

@@ -6,18 +6,20 @@ import GoogleAuth from "../components/GoogleAuth";
 import { useNavigate } from "react-router-dom";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { Auth } from "../config/firebase.js";
+import React from "react";
+import Message from "../components/ui/Message.jsx";
 
 const SignIn = () => {
-  //  const [userError, setUserError] = React.useState('');
-  //  const [loading, setLoading] = React.useState(false);
+  const [userError, setUserError] = React.useState("");
+  const [loading, setLoading] = React.useState(false);
   const navigate = useNavigate();
 
   const signIn = async (e) => {
+    setLoading((prev) => !prev);
     e.preventDefault();
     const email = e.target[0].value;
     const password = e.target[1].value;
     // console.log(email, password);
-    // setLoading((prev) => !prev);
 
     try {
       const { user } = await signInWithEmailAndPassword(Auth, email, password);
@@ -25,11 +27,12 @@ const SignIn = () => {
       console.log("Signed In successfully!");
     } catch (error) {
       console.error(error);
-      // setUserError("Invalid login credentials");
+      setUserError(
+        "Invalid email or password. Please check your credentials and try again."
+      );
+    } finally {
+      setLoading((prev) => !prev);
     }
-    // finally {
-    //   setLoading((prev) => !prev);
-    // }
   };
 
   return (
@@ -56,7 +59,8 @@ const SignIn = () => {
             placeholder="Fake@123"
             icon={<AiTwotoneLock />}
           />
-          <Button type="submit" text="SignIn" />
+          {userError && <Message message={userError} />}
+          <Button type="submit" text="SignIn" loading={loading} />
         </form>
         <GoogleAuth />
       </div>
