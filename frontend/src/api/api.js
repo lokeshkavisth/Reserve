@@ -1,7 +1,8 @@
 import axios from "axios";
 
 const reserveAPI = async ({ method, route, params, data }) => {
-  const url = `http://localhost:5001${route}`;
+  const BASE_URL = import.meta.env.BASE_URL;
+  const url = `${BASE_URL}${route}`;
   const options = {
     method,
     url,
