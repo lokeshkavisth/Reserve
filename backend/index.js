@@ -5,7 +5,7 @@ const connectToMongo = require("./src/config/database");
 const router = require("./src/routes/routes");
 
 const app = express();
-app.use(cors({ origin: "https://reserve-your-bus.vercel.app" }));
+app.use(cors());
 app.use(express.json());
 app.use("/", router);
 
