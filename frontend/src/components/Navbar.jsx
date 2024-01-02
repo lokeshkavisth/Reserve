@@ -37,20 +37,10 @@ const Navbar = () => {
   const navigate = useNavigate();
   const { pathname } = useLocation();
   const dispatch = useDispatch();
-  // const selector = useSelector((state) => state.reducer);
-
-  const toggleMenu = (e) => {
-    const menu = document.getElementById("menu");
-    e.target.classList.toggle("ring-2");
-    e.target.classList.toggle("ring-blue-500");
-    menu.classList.toggle("hidden");
-  };
 
   React.useEffect(() => {
     const unsubscribe = onAuthStateChanged(Auth, (credential) => {
       if (credential) {
-        // const { email, displayName, photoURL, uid } = credential;
-
         const currentUser = {
           username: credential.displayName || "",
           email: credential.email || "",
@@ -66,16 +56,27 @@ const Navbar = () => {
     return () => unsubscribe();
   }, [dispatch]);
 
-  const register = () => {
-    setLoading((prev) => !prev);
-    pathname === "/sign-in" ? navigate("/sign-up") : navigate("/sign-in");
-    setLoading((prev) => !prev);
+  const toggleMenu = (e) => {
+    const menu = e.target.nextElementSibling;
+    e.target.classList.toggle("ring-2");
+    e.target.classList.toggle("ring-blue-500");
+    menu.classList.toggle("hidden");
   };
 
-  const logOut = async () => {
-    // setLoading((prev) => !prev);
-
+  const handleSignUpOrRegister = async () => {
+    setLoading(true);
     try {
+      await navigate(pathname === "/sign-in" ? "/sign-up" : "/register");
+    } catch (error) {
+      console.error("Error navigating:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleSignOut = async () => {
+    try {
+      setLoading(true);
       await signOut(Auth);
       setUser(initialUserState);
       dispatch(getCurrentUser(initialUserState));
@@ -83,12 +84,9 @@ const Navbar = () => {
     } catch (error) {
       console.error("Error signing out", error);
     } finally {
-      // setLoading((prev) => !prev);
+      setLoading(false);
     }
   };
-
-  // console.log("user", user);
-  // console.log("store", selector);
 
   return (
     <header className="border-b sticky top-0 w-full z-50 bg-white bg-opacity-50 backdrop-blur">
@@ -115,7 +113,6 @@ const Navbar = () => {
                 alt="profile"
                 className="h-8 w-8 rounded-md object-cover object-center"
               />
-              {/* dropdown start  */}
               <div
                 id="menu"
                 className="min-w-max py-2 border bg-white hidden absolute right-0 mt-1 rounded-md z-10"
@@ -151,13 +148,13 @@ const Navbar = () => {
                   <li className=" px-3 py-2">
                     {user.uid.length > 1 ? (
                       <Button
-                        onClick={logOut}
+                        onClick={handleSignOut}
                         className="py-2"
                         text={"Sign-Out"}
                       />
                     ) : (
                       <Button
-                        onClick={register}
+                        onClick={handleSignUpOrRegister}
                         loading={loading}
                         className="py-2"
                         text={pathname === "/sign-in" ? "Sign-up" : "Register"}
@@ -166,7 +163,6 @@ const Navbar = () => {
                   </li>
                 </ul>
               </div>
-              {/* dropdown end  */}
             </div>
           </div>
         </div>

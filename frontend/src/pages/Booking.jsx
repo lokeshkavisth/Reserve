@@ -15,7 +15,7 @@ const Booking = () => {
   React.useEffect(() => {
     const fetchBookings = async () => {
       try {
-        setLoading((prev) => !prev);
+        setLoading(true);
         const res = await reserveAPI({
           method: "GET",
           route: "/booking",
@@ -30,7 +30,7 @@ const Booking = () => {
       } catch (error) {
         console.error(error);
       } finally {
-        setLoading((prev) => !prev);
+        setLoading(false);
       }
     };
     fetchBookings();

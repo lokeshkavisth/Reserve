@@ -32,5 +32,81 @@
     { "value": "D3", "label": "D3" },
     { "value": "D4", "label": "D4" },
     { "value": "D5", "label": "D5" }
+  ],
+  "footer": {
+    "resources": [
+      {
+        "text": "lorem",
+        "href": ""
+      },
+      {
+        "text": "ipsum",
+        "href": ""
+      }
+    ],
+    "follow_us": [
+      {
+        "text": "github",
+        "href": ""
+      },
+      {
+        "text": "discord",
+        "href": ""
+      }
+    ],
+    "legal": [
+      {
+        "text": "privacy policy",
+        "href": ""
+      },
+      {
+        "text": "terms & conditions",
+        "href": ""
+      }
+    ]
+  },
+  "busAmenities": [
+    {
+      "value": "water bottle",
+      "label": "Water Bottle"
+    },
+    {
+      "value": "blackets",
+      "label": "Blankets"
+    },
+    {
+      "value": "charging point",
+      "label": "Charging Point"
+    },
+    {
+      "value": "movie",
+      "label": "Movie"
+    },
+    {
+      "value": "toilet",
+      "label": "Toilet"
+    },
+    {
+      "value": "emergency contact number",
+      "label": "Emergency Contact Number"
+    }
+  ],
+  "busCategories": [
+    {
+      "value": "ac",
+      "label": "AC"
+    },
+    {
+      "value": "seater",
+      "label": "Seater"
+    },
+    {
+      "value": "sleeper",
+      "label": "Sleeper"
+    },
+    {
+      "value": "non ac",
+      "label": "Non AC"
+    }
   ]
 }

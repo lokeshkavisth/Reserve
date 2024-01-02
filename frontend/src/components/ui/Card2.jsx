@@ -27,12 +27,15 @@ const Card2 = (props) => {
     timeStyle: "short",
   });
 
-  const tripDetails = {
-    departureDate,
-    departureTime,
-    arrivalDate,
-    arrivalTime,
-  };
+  const tripDetails = React.useMemo(
+    () => ({
+      departureDate,
+      departureTime,
+      arrivalDate,
+      arrivalTime,
+    }),
+    [departureDate, departureTime, arrivalDate, arrivalTime]
+  );
 
   const departureDateTime = new Date(tripDetails.departureDate).getTime();
   const arrivalDateTime = new Date(tripDetails.arrivalDate).getTime();
@@ -62,7 +65,7 @@ const Card2 = (props) => {
   return (
     <div>
       <section
-        className={`grid  ${
+        className={`grid h-full ${
           isBtnShow ? "grid-cols-4" : "grid-cols-1"
         } border p-4 rounded-md shadow-sm bg-white relative`}
       >
@@ -70,7 +73,7 @@ const Card2 = (props) => {
           <h2 className="text-xl font-semibold capitalize">{busName}</h2>
           {categories && (
             <div>
-              <ul className="flex items-center gap-2">
+              <ul className="flex items-center flex-wrap gap-2">
                 {categories?.map((category, i) => (
                   <li
                     key={i}
@@ -115,7 +118,7 @@ const Card2 = (props) => {
 
           {amenities && (
             <div>
-              <ul className="flex items-center gap-2">
+              <ul className="flex items-center flex-wrap gap-2">
                 {amenities?.map((amenity, i) => (
                   <li
                     key={i}

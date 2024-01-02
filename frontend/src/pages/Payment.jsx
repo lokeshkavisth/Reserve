@@ -21,13 +21,14 @@ const Payment = () => {
   const [error, setError] = React.useState(null);
 
   const { booking, user } = useSelector((state) => state.reducer);
+
   const stripe = useStripe();
   const elements = useElements();
   const navigate = useNavigate();
 
   const proceedToPay = async (e) => {
     try {
-      setLoading((prev) => !prev);
+      setLoading(true);
       e.preventDefault();
       setError(null);
 
@@ -58,6 +59,7 @@ const Payment = () => {
             departureDate: booking.departureDate,
             arrivalDate: booking.arrivalDate,
             origin: booking.origin,
+            seats: booking.seats,
             destination: booking.destination,
             description: `Payment for bus reservation from ${booking.origin} to ${booking.destination} on ${booking.departureDate} at ${booking.departureTime} for passenger ${formValues.name}.`,
           };
@@ -102,23 +104,20 @@ const Payment = () => {
               });
 
             if (confirmationError) {
-              console.log("confirm error", confirmationError);
               setError(confirmationError.message);
               toast.error(confirmationError.message);
             } else {
               toast.success("Payment confirmed");
               setError(null);
               navigate("/bookings");
-              // console.log("paymentIntent", paymentIntent);
             }
           }
         }
       }
     } catch (err) {
-      console.log("catch Block", err);
       setError(err);
     } finally {
-      setLoading((prev) => !prev);
+      setLoading(false);
     }
   };
 

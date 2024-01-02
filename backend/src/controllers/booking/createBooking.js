@@ -40,7 +40,7 @@ const createBooking = async (req, res) => {
 
     return res
       .status(500)
-      .json({ success: false, error: "Internal Server Error", msg: error });
+      .json({ success: false, error: "Internal Server Error" });
   }
 };
 

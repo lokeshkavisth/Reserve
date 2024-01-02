@@ -19,22 +19,27 @@ const Hero = () => {
 
   React.useEffect(() => {
     const fetchLocations = async () => {
-      const res = await reserveAPI({ method: "GET", route: "/location" });
+      try {
+        const res = await reserveAPI({ method: "GET", route: "/location" });
 
-      const locations = res.locations[0].locations.map(({ district }) => ({
-        value: district,
-        label: district,
-      }));
-
-      setLocations(locations);
-      dispatch(getLocations(locations));
+        if (res && res.locations) {
+          const locations = res.locations[0].locations.map(({ district }) => ({
+            value: district,
+            label: district,
+          }));
+          setLocations(locations);
+          dispatch(getLocations(locations));
+        }
+      } catch (error) {
+        console.error("Error fetching locations:", error);
+      }
     };
 
-    return () => fetchLocations();
+    fetchLocations();
   }, [dispatch]);
 
   const searchBus = async (e) => {
-    setLoading((prev) => !prev);
+    setLoading(true);
     e.preventDefault();
 
     try {
@@ -57,10 +62,10 @@ const Hero = () => {
         console.error("Unexpected response format:", res);
       }
     } catch (error) {
-      toast.error(error.response.data.error);
+      toast.error(error.response?.data?.error || "API request failed");
       console.error("API request failed:", error);
     } finally {
-      setLoading((prev) => !prev);
+      setLoading(false);
     }
   };
 

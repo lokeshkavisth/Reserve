@@ -1,58 +1,13 @@
 import React from "react";
-import Card2 from "../components/ui/Card2";
 import { useDispatch, useSelector } from "react-redux";
+import Card2 from "../components/ui/Card2";
 import DropDown from "../components/ui/DropDown";
 import Input from "../components/ui/Input";
 import Button from "../components/ui/Button";
+import Skeleton from "../components/ui/Skeleton";
 import reserveAPI from "../api/api";
 import { getTrips } from "../redux/actions/actions";
-import Skeleton from "../components/ui/Skeleton";
-
-const amenityOptions = [
-  {
-    value: "water bottle",
-    label: "Water Bottle",
-  },
-  {
-    value: "blackets",
-    label: "Blankets",
-  },
-  {
-    value: "charging point",
-    label: "Charging Point",
-  },
-  {
-    value: "movie",
-    label: "Movie",
-  },
-  {
-    value: "toilet",
-    label: "Toilet",
-  },
-  {
-    value: "emergency contact number",
-    label: "Emergency Contact Number",
-  },
-];
-
-const categoryOptions = [
-  {
-    value: "ac",
-    label: "AC",
-  },
-  {
-    value: "seater",
-    label: "Seater",
-  },
-  {
-    value: "sleeper",
-    label: "Sleeper",
-  },
-  {
-    value: "non ac",
-    label: "Non AC",
-  },
-];
+import { busAmenities, busCategories } from "../data/data.json";
 
 const Trips = () => {
   const [origin, setOrigin] = React.useState(null);
@@ -62,45 +17,30 @@ const Trips = () => {
   const [amenities, setAmenities] = React.useState([]);
   const [loading, setLoading] = React.useState(false);
 
-  // const navigate = useNavigate();
   const dispatch = useDispatch();
-
   const selector = useSelector((state) => state.reducer);
   const { locations, trips } = selector;
-  // console.log("selector", selector);
 
   const filterResults = async (e) => {
-    setLoading((prev) => !prev);
+    setLoading(true);
     e.preventDefault();
 
-    const formValues = {};
-    const formData = new FormData(e.target);
-
-    if (origin && origin.value) {
-      formValues["origin"] = origin.value.toLocaleLowerCase();
-    }
-
-    if (destination && destination.value) {
-      formValues["destination"] = destination.value.toLocaleLowerCase();
-    }
-
-    if (amenities.length > 0) {
-      formValues["amenities"] = amenities.map((amenity) =>
-        amenity.value.toLocaleLowerCase()
-      );
-    }
-    if (categories.length > 0) {
-      formValues["categories"] = categories.map((category) =>
+    const formValues = {
+      origin: origin?.value?.toLocaleLowerCase(),
+      destination: destination?.value?.toLocaleLowerCase(),
+      amenities: amenities.map((amenity) => amenity.value.toLocaleLowerCase()),
+      categories: categories.map((category) =>
         category.value.toLocaleLowerCase()
-      );
-    }
+      ),
+    };
+
+    const formData = new FormData(e.target);
 
     formData.forEach((value, key) => {
       if (value !== "") {
         formValues[key] = value.toLocaleLowerCase();
       }
     });
-    // console.log("s", origin?.value, destination?.value, formData);
 
     try {
       const res = await reserveAPI({
@@ -116,7 +56,7 @@ const Trips = () => {
       console.error(error);
       dispatch(getTrips([]));
     } finally {
-      setLoading((prev) => !prev);
+      setLoading(false);
     }
   };
 
@@ -133,22 +73,28 @@ const Trips = () => {
     setCategories([]);
     setAmenities([]);
 
-    // Reset the form directly
     const form = document.getElementById("filterForm");
     form.reset();
 
-    // Clear dropdown selections
     const dropdowns = form.querySelectorAll("select");
     dropdowns.forEach((dropdown) => {
-      dropdown.value = null; // Set to null to clear the selection
+      dropdown.value = null;
     });
   };
 
+  const skeletonProps = React.useMemo(
+    () => [
+      { height: "6", width: "w-28" },
+      { colSpan: 2 },
+      { colSpan: 2 },
+      { colSpan: 2 },
+    ],
+    []
+  );
+
   return (
     <section className="grid grid-cols-6 gap-2 items-start">
-      {/* filters */}
       <aside className="bg-white p-4 col-span-2 border rounded-md shadow-sm sticky top-[75px]">
-        {/* origin */}
         <form id="filterForm" className="space-y-8" onSubmit={filterResults}>
           <section className="space-y-4">
             <DropDown
@@ -158,7 +104,6 @@ const Trips = () => {
               value={origin}
               onChange={(data) => setOrigin(data)}
             />
-            {/* destination  */}
             <DropDown
               options={locations}
               label="Destination"
@@ -166,7 +111,6 @@ const Trips = () => {
               value={destination}
               onChange={(data) => setDestination(data)}
             />
-            {/* departure date  */}
             <Input
               type="date"
               placeholder="Select a date"
@@ -175,7 +119,6 @@ const Trips = () => {
               onChange={handleDepartureDate}
               min={new Date().toISOString().split("T")[0]}
             />
-            {/* arrival date  */}
             <Input
               type="date"
               placeholder="Select a date"
@@ -183,18 +126,16 @@ const Trips = () => {
               label="Arrival Date"
               min={arrivalDate}
             />
-            {/* category  */}
             <DropDown
-              options={categoryOptions}
+              options={busCategories}
               label="Category"
               placeholder="Bus category"
               value={categories}
               isMulti
               onChange={(category) => setCategories(category)}
             />
-            {/* amenities  */}
             <DropDown
-              options={amenityOptions}
+              options={busAmenities}
               label="Amenities"
               placeholder="Select an amenity"
               value={amenities}
@@ -214,11 +155,10 @@ const Trips = () => {
         </form>
       </aside>
 
-      {/* trips */}
       <div className="col-span-4 flex flex-col gap-2 relative">
         {trips.length > 0 ? (
           loading ? (
-            <Skeleton />
+            <Skeleton rowProps={skeletonProps} />
           ) : (
             trips.map((trip) => (
               <Card2

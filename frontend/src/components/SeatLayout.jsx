@@ -12,7 +12,7 @@ const SeatLayout = (props) => {
   const dispatch = useDispatch();
 
   const selectSeats = (e) => {
-    setLoading((prev) => !prev);
+    setLoading(true);
     e.preventDefault();
 
     const formValues = {};
@@ -29,11 +29,9 @@ const SeatLayout = (props) => {
 
     const bookingData = { ...props, ...formValues };
 
-    // console.log("booking data", bookingData);
-
     dispatch(tripToBook(bookingData));
     navigate("/payment");
-    setLoading((prev) => !prev);
+    setLoading(false);
   };
 
   const resetSeatSelection = () => {
@@ -52,7 +50,6 @@ const SeatLayout = (props) => {
         />
       </div>
       <hr />
-
       <form id="selectSeats" onSubmit={selectSeats} className="space-y-4">
         <ul className="flex items-center justify-between flex-wrap gap-4">
           {seats.map(({ value }) => (
@@ -67,7 +64,6 @@ const SeatLayout = (props) => {
             </li>
           ))}
         </ul>
-
         <Button text="Proceed To Book" type="submit" loading={loading} />
       </form>
     </section>

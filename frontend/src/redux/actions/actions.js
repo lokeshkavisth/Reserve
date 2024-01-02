@@ -1,27 +1,7 @@
-export const getCurrentUser = (user) => {
-  return {
-    type: "GET_CURRENT_USER",
-    payload: user,
-  };
-};
+export const createAction = (type, payload) => ({ type, payload });
 
-export const getLocations = (locations) => {
-  return {
-    type: "GET_LOCATIONS",
-    payload: locations,
-  };
-};
-
-export const getTrips = (trips) => {
-  return {
-    type: "GET_TRIPS",
-    payload: trips,
-  };
-};
-
-export const tripToBook = (booking) => {
-  return {
-    type: "TRIP_TO_BOOK",
-    payload: booking,
-  };
-};
+export const getCurrentUser = (user) => createAction("GET_CURRENT_USER", user);
+export const getLocations = (locations) =>
+  createAction("GET_LOCATIONS", locations);
+export const getTrips = (trips) => createAction("GET_TRIPS", trips);
+export const tripToBook = (booking) => createAction("TRIP_TO_BOOK", booking);

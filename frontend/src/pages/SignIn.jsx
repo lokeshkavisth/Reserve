@@ -15,23 +15,29 @@ const SignIn = () => {
   const navigate = useNavigate();
 
   const signIn = async (e) => {
-    setLoading((prev) => !prev);
+    setLoading(true);
     e.preventDefault();
     const email = e.target[0].value;
     const password = e.target[1].value;
-    // console.log(email, password);
 
     try {
       const { user } = await signInWithEmailAndPassword(Auth, email, password);
       if (user) navigate("/");
       console.log("Signed In successfully!");
     } catch (error) {
-      console.error(error);
-      setUserError(
-        "Invalid email or password. Please check your credentials and try again."
-      );
+      setUserError(getErrorMessage(error));
     } finally {
-      setLoading((prev) => !prev);
+      setLoading(false);
+    }
+  };
+
+  const getErrorMessage = (error) => {
+    switch (error.code) {
+      case "auth/user-not-found":
+      case "auth/wrong-password":
+        return "Invalid email or password. Please check your credentials and try again.";
+      default:
+        return "An error occurred. Please try again.";
     }
   };
 

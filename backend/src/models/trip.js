@@ -1,7 +1,7 @@
 const { Schema, model } = require("mongoose");
 const { v4: uuidv4 } = require("uuid");
 
-const tripSchema = new Schema({
+const TripSchema = new Schema({
   uid: {
     type: String,
     required: true,
@@ -86,10 +86,6 @@ const tripSchema = new Schema({
   seats: {
     type: [String],
     required: true,
-    // validate: {
-    //   validator: isValidSeats,
-    //   message: "Invalid seat information",
-    // },
   },
   busNumber: {
     type: String,
@@ -170,6 +166,6 @@ function isValidAmenities(value) {
   );
 }
 
-const Trip = model("trip", tripSchema);
+const Trip = model("trip", TripSchema);
 
 module.exports = Trip;

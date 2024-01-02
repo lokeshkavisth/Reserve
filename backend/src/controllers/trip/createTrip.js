@@ -10,17 +10,14 @@ const createTrip = async (req, res) => {
         .json({ success: false, message: "Failed to create trip" });
     }
 
-    // Respond with the created trip
     res.status(201).json({ success: true, trip });
   } catch (error) {
     console.error("Error creating trip", error);
 
-    // Handle specific validation errors
     if (error.name === "ValidationError") {
       return res.status(400).json({ success: false, error: error.message });
     }
 
-    // General server error
     res.status(500).json({ success: false, error: "Internal Server Error" });
   }
 };

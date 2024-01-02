@@ -15,6 +15,7 @@ const Card3 = (props) => {
   const departureT = new Date(departureTime).toLocaleTimeString("en-US", {
     timeStyle: "short",
   });
+
   const arrivalT = new Date(arrivalTime).toLocaleTimeString("en-US", {
     timeStyle: "short",
   });

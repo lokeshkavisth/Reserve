@@ -6,6 +6,7 @@ import reserveAPI from "../api/api";
 import { useSelector } from "react-redux";
 import toast, { Toaster } from "react-hot-toast";
 import { seats as seatRows } from "../data/data.json";
+import { useNavigate } from "react-router-dom";
 
 const amenityOptions = [
   {
@@ -60,11 +61,11 @@ const Register = () => {
   const [arrivalDate, setArrivalDate] = React.useState("");
   const [loading, setLoading] = React.useState(false);
   const selector = useSelector((state) => state.reducer);
+  const navigate = useNavigate();
 
   const register = async (e) => {
-    setLoading((prev) => !prev);
+    setLoading(true);
     e.preventDefault();
-    console.log("event", e);
 
     const formValues = {};
     const formData = new FormData(e.target);
@@ -89,12 +90,12 @@ const Register = () => {
 
       if (res && res.trip) {
         toast.success("Registration successful!");
+        navigate("/manage-buses");
       }
     } catch (error) {
       console.error("API request failed:", error);
     } finally {
-      setLoading((prev) => !prev);
-      console.log("Second", formValues);
+      setLoading(false);
     }
   };
 

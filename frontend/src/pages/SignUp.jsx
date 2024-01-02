@@ -1,6 +1,5 @@
 import Input from "../components/ui/Input";
 import Button from "../components/ui/Button";
-import { RiLockPasswordLine } from "react-icons/ri";
 import { AiTwotoneMail } from "react-icons/ai";
 import GoogleAuth from "../components/GoogleAuth";
 import { useNavigate } from "react-router-dom";
@@ -17,12 +16,11 @@ const SignUp = () => {
   const navigate = useNavigate();
 
   const signUp = async (e) => {
-    setLoading((prev) => !prev);
+    setLoading(true);
     e.preventDefault();
     const username = e.target[0].value;
     const email = e.target[1].value;
     const password = e.target[2].value;
-    // console.log(username, email, password);
 
     await createUserWithEmailAndPassword(Auth, email, password)
       .then(({ user }) => {
@@ -31,15 +29,17 @@ const SignUp = () => {
         });
 
         console.log("User registered successfully!");
-        // console.log("up", user);
         navigate("/");
       })
       .catch((error) => {
-        console.log("error", error);
-        setUserError("Email already in use, please try with diffrent email");
+        if (error.code === "auth/weak-password") {
+          setUserError("Password should be at least 6 characters");
+        } else if (error.code === "auth/email-already-in-use") {
+          setUserError("Email already in use, please try with diffrent email");
+        }
       });
 
-    setLoading((prev) => !prev);
+    setLoading(false);
   };
 
   return (

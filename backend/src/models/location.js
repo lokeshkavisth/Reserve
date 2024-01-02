@@ -1,9 +1,9 @@
 const { Schema, model } = require("mongoose");
 
-const locationSchema = new Schema({
-  district: String,
+const LocationSchema = new Schema({
+  district: { type: String, trim: true, required: true },
 });
 
-const Location = model("location", locationSchema);
+const Location = model("location", LocationSchema);
 
 module.exports = Location;

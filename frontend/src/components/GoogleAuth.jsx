@@ -12,6 +12,7 @@ const GoogleAuth = () => {
       const { user } = credential;
 
       if (user) navigate("/");
+      console.error("Sign-in with Google failed.");
     } catch (error) {
       console.error(error);
     }

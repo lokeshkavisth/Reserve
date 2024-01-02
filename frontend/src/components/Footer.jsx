@@ -1,40 +1,7 @@
 import { FaLinkedin, FaGithub } from "react-icons/fa";
 import { FaXTwitter, FaHashnode } from "react-icons/fa6";
 import Logo from "./Logo";
-import { Link } from "react-router-dom";
-
-const quickLinks = {
-  resources: [
-    {
-      text: "lorem",
-      href: "",
-    },
-    {
-      text: "ipsum",
-      href: "",
-    },
-  ],
-  follow_us: [
-    {
-      text: "github",
-      href: "",
-    },
-    {
-      text: "discord",
-      href: "",
-    },
-  ],
-  legal: [
-    {
-      text: "privacy policy",
-      href: "",
-    },
-    {
-      text: "terms & conditions",
-      href: "",
-    },
-  ],
-};
+import { footer } from "../data/data.json";
 
 const social = [
   {
@@ -70,12 +37,14 @@ const Footer = () => {
             <div>
               <h3 className="mb-1 text-base">Resources</h3>
               <ul>
-                {quickLinks.resources.map(({ text, href }) => (
+                {footer.resources.map(({ text, href }) => (
                   <li
                     key={text}
                     className="capitalize hover:text-blue-500 text-gray-500"
                   >
-                    <Link to={href}>{text}</Link>
+                    <a href={href} target="_blank" rel="noopener noreferrer">
+                      {text}
+                    </a>
                   </li>
                 ))}
               </ul>
@@ -83,12 +52,14 @@ const Footer = () => {
             <div>
               <h3 className="mb-1 text-base">Follow us</h3>
               <ul>
-                {quickLinks.follow_us.map(({ text, href }) => (
+                {footer.follow_us.map(({ text, href }) => (
                   <li
                     key={text}
                     className="capitalize hover:text-blue-500 text-gray-500"
                   >
-                    <Link to={href}>{text}</Link>
+                    <a href={href} target="_blank" rel="noopener noreferrer">
+                      {text}
+                    </a>
                   </li>
                 ))}
               </ul>
@@ -96,12 +67,14 @@ const Footer = () => {
             <div>
               <h3 className="mb-1 text-base">Legal</h3>
               <ul>
-                {quickLinks.legal.map(({ text, href }) => (
+                {footer.legal.map(({ text, href }) => (
                   <li
                     key={text}
                     className="capitalize hover:text-blue-500 text-gray-500"
                   >
-                    <Link to={href}>{text}</Link>
+                    <a href={href} target="_blank" rel="noopener noreferrer">
+                      {text}
+                    </a>
                   </li>
                 ))}
               </ul>
@@ -115,9 +88,9 @@ const Footer = () => {
             <ul className="flex items-center gap-4">
               {social.map(({ name, href, icon }) => (
                 <li key={name}>
-                  <Link to={href} target="_blank">
+                  <a href={href} target="_blank" rel="noopener noreferrer">
                     {icon}
-                  </Link>
+                  </a>
                 </li>
               ))}
             </ul>

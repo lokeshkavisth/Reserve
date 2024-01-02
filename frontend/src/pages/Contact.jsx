@@ -1,4 +1,3 @@
-import React from "react";
 import { PiChatCenteredDuotone } from "react-icons/pi";
 import { FaLocationArrow } from "react-icons/fa6";
 import { MdCall } from "react-icons/md";
