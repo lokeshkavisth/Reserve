@@ -1,0 +1,205 @@
+{
+	"info": {
+		"_postman_id": "157c7c90-410d-4514-b311-5b3ac04f9537",
+		"name": "Reserve-API",
+		"description": "Welcome to the Reserve API collection, where you can explore and interact with endpoints related to booking, trips, and locations. This collection provides a comprehensive set of APIs for managing reservations, accessing trip details, and retrieving location information.",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "28325636",
+		"_collection_link": "https://interstellar-crescent-756657.postman.co/workspace/45b1474c-0585-456e-8798-33c67f237db0/collection/28325636-157c7c90-410d-4514-b311-5b3ac04f9537?action=share&source=collection_link&creator=28325636"
+	},
+	"item": [
+		{
+			"name": "Trip",
+			"item": [
+				{
+					"name": "Create Trip",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"uid\": \"Ypd6TflCdbZ4Xw7GbqyUb7cF6Es1\",\r\n    \"seats\": [\r\n        \"A2\",\r\n        \"A4\",\r\n        \"C5\",\r\n        \"B2\"\r\n    ],\r\n    \"amenities\": [\r\n        \"blackets\",\r\n        \"toilet\",\r\n        \"movie\",\r\n        \"water bottle\"\r\n    ],\r\n    \"categories\": [\r\n        \"seater\",\r\n        \"ac\",\r\n        \"sleeper\"\r\n    ],\r\n    \"busName\": \"ComfortExpress\",\r\n    \"busNumber\": \"BUS123\",\r\n    \"origin\": \"deeg (bharatpur)\",\r\n    \"destination\": \"balotra (barmer)\",\r\n    \"departureDate\": \"2023-12-18\",\r\n    \"arrivalDate\": \"2023-12-22\",\r\n    \"departureTime\": \"11:52\",\r\n    \"arrivalTime\": \"11:52\",\r\n    \"fare\": \"33\",\r\n    \"ownerId\": \"sjdhfi485h8\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASE_URL}}/",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								""
+							]
+						},
+						"description": "This endpoint allows you to create a new trip by sending a POST request to the database. The request should include a payload with various trip details such as seats, amenities, categories, bus name, bus number, origin, destination, departure date, arrival date, departure time, arrival time, fare, and owner ID.\n\nUpon a successful execution, the API will return a status code of 201 along with a JSON response indicating the success of the operation and providing details of the newly created trip, including its unique identifier, departure and arrival dates, origin, destination, owner ID, departure and arrival times, categories, seats, bus number, amenities, fare, bus name, and other related attributes.\n\nExample response:  \n\n``` json\n{\n    \"success\": true,\n    \"trip\": {\n        \"uid\": \"Ypd6TflCdbZ4Xw7GbqyUb7cF6Es1\",\n        \"departureDate\": \"2023-12-18T00:00:00.000Z\",\n        \"arrivalDate\": \"2023-12-22T00:00:00.000Z\",\n        \"origin\": \"deeg (bharatpur)\",\n        \"destination\": \"balotra (barmer)\",\n        \"ownerId\": \"sjdhfi485h8\",\n        \"departureTime\": \"2024-01-04T06:22:14.880Z\",\n        \"arrivalTime\": \"2024-01-04T06:22:14.880Z\",\n        \"categories\": [\n            \"seater\",\n            \"ac\",\n            \"sleeper\"\n        ],\n        \"seats\": [\n            \"A2\",\n            \"A4\",\n            \"C5\",\n            \"B2\"\n        ],\n        \"busNumber\": \"bus123\",\n        \"amenities\": [\n            \"blackets\",\n            \"toilet\",\n            \"movie\",\n            \"water bottle\"\n        ],\n        \"fare\": 33,\n        \"busName\": \"comfortexpress\",\n        \"_id\": \"659672367c09ae7b5d6e122e\",\n        \"__v\": 0\n    }\n}\n\n ```"
+					},
+					"response": []
+				},
+				{
+					"name": "Fetch Trips",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{BASE_URL}}/",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								""
+							]
+						},
+						"description": "This endpoint sends an HTTP GET request to the database. It retrieves a list of trips with details such as ID, user ID, departure and arrival dates, origin, destination, departure and arrival times, categories, seats, bus number, amenities, fare, bus name, and owner ID.\n\nThe response will have a status code of 200, indicating a successful request. The response body will contain a boolean \"success\" flag and an array of \"trips\" with their respective details.\n\nExample response:\n\n``` json\n{\n    \"success\": true,\n    \"trips\": [\n        {\n            \"_id\": \"6582f899f9499aa3854fc825\",\n            \"uid\": \"BvlNcEDSCnVwKeW04YSqXdLOSJ82\",\n            \"departureDate\": \"2023-12-20T00:00:00.000Z\",\n            \"arrivalDate\": \"2023-12-24T00:00:00.000Z\",\n            \"origin\": \"Jaipur Urban (Jaipur)\",\n            \"destination\": \"Jaipur Rural (Jaipur)\",\n            \"departureTime\": \"2023-12-20T14:21:17.476Z\",\n            \"arrivalTime\": \"2023-12-20T02:21:17.477Z\",\n            \"categories\": [\n                \"ac\"\n            ],\n            \"seats\": [\n                \"A1\"\n            ],\n            \"busNumber\": \"RJ80SH3949\",\n            \"amenities\": [\n                \"emergency contact number\"\n            ],\n            \"fare\": 37,\n            \"busName\": \"Jaipur Travels\",\n            \"ownerId\": \"cbb3f10e-8e5e-4607-8c1f-7efa00ba3c20\",\n            \"__v\": 0\n        }\n    ]\n}\n\n ```"
+					},
+					"response": []
+				},
+				{
+					"name": "Filter Trips",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASE_URL}}/?destination=balotra (barmer)&origin=deeg (bharatpur)",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								""
+							],
+							"query": [
+								{
+									"key": "destination",
+									"value": "balotra (barmer)"
+								},
+								{
+									"key": "origin",
+									"value": "deeg (bharatpur)"
+								}
+							]
+						},
+						"description": "This endpoint makes an HTTP GET request to retrieve trip details based on the provided origin and destination. The request parameters include \"destination\" and \"origin\", specifying the destination and origin locations for the trip search.\n\nThe response to the request has a status code of 200 and includes a JSON object with a \"success\" field indicating the success status of the request. Additionally, the response contains an array of \"trips\" with details such as trip ID, UID, departure and arrival dates, origin, destination, departure and arrival times, categories, available seats, bus number, amenities, fare, bus name, and owner ID.\n\nPlease note that the request does not include a request body.\n\nExample response:\n\n``` json\n{\n    \"success\": true,\n    \"trips\": [\n        {\n            \"_id\": \"6593b270ee052b07c6edeab1\",\n            \"uid\": \"Ypd6TflCdbZ4Xw7GbqyUb7cF6Es1\",\n            \"departureDate\": \"2024-01-02T00:00:00.000Z\",\n            \"arrivalDate\": \"2024-01-06T00:00:00.000Z\",\n            \"origin\": \"deeg (bharatpur)\",\n            \"destination\": \"balotra (barmer)\",\n            \"departureTime\": \"2024-01-01T18:50:28.691Z\",\n            \"arrivalTime\": \"2024-01-02T11:53:28.692Z\",\n            \"categories\": [\n                \"ac\",\n                \"seater\",\n                \"sleeper\"\n            ],\n            \"seats\": [\n                \"A1\",\n                \"A3\",\n                \"A2\",\n                \"A4\",\n                \"A5\"\n            ],\n            \"busNumber\": \"rj234jf3453\",\n            \"amenities\": [\n                \"water bottle\",\n                \"blackets\",\n                \"movie\",\n                \"charging point\",\n                \"toilet\",\n                \"emergency contact number\"\n            ],\n            \"fare\": 12345,\n            \"busName\": \"tripura motors\",\n            \"ownerId\": \"7e73d875-4905-49b2-a3c8-be59ef9c1eb1\",\n            \"__v\": 0\n        }\n    ]\n}\n\n ```"
+					},
+					"response": []
+				}
+			],
+			"description": "Create new trips, fetch trip details, and explore a variety of trip-related functionalities."
+		},
+		{
+			"name": "Booking",
+			"item": [
+				{
+					"name": "Create Booking",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"uid\": \"Ypd6TflCdbZ4Xw7GbqyUb7cF6Es1\",\r\n    \"name\": \"jhon doe\",\r\n    \"email\": \"jhondoe@gmail.com\",\r\n    \"phone\": \"+919876543219\",\r\n    \"age\": \"35\",\r\n    \"gender\": \"male\",\r\n    \"busName\": \"fake bus\",\r\n    \"origin\": \"jaipur urban (jaipur)\",\r\n    \"destination\": \"jaipur rural (jaipur)\",\r\n    \"departureDate\": \"2023-12-31\",\r\n    \"arrivalDate\": \"2024-01-05\",\r\n    \"departureTime\": \"11:37\",\r\n    \"arrivalTime\": \"22:41\",\r\n    \"amount\": 12887,\r\n    \"currency\": \"usd\",\r\n    \"description\": \"Payment for bus reservation from jaipur urban (jaipur) to jaipur rural (jaipur) on 2023-12-31 at 11:37 for passenger noreya noreya.\",\r\n    // Provide valid stripe token here\r\n    \"token\": {\r\n        \"card\": {},\r\n        \"id\": \"tok_1OU2R4SDctmq1t5tSB9jwQ3u\"\r\n    },\r\n    \"seats\": [\r\n        \"A1\",\r\n        \"B2\",\r\n        \"A3\",\r\n        \"A5\"\r\n    ]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASE_URL}}/booking",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"booking"
+							]
+						},
+						"description": "This endpoint allows you to create a new bookingby sending a POST request to the database. The request should include a payload with various booking details such as seats, amenities, categories, bus name, origin, destination, departure date, arrival date, departure time, arrival time, amouont, token etc.\n\nUpon a successful execution, the API will return a status code of 201 along with a JSON response indicating the success of the operation and providing details of the newly created booking, including clientSecret and other booking details.\n\nExample response:\n\n``` json\n{\n  \"success\": true,\n  \"booking\": {\n    \"uid\": \"xyz456\",\n    \"name\": \"John Doe\",\n    \"email\": \"john.doe@example.com\",\n    \"phone\": \"+1234567890\",\n    \"age\": 25,\n    \"gender\": \"Male\",\n    \"busName\": \"ComfortExpress\",\n    \"origin\": \"CityA\",\n    \"destination\": \"CityB\",\n    \"departureDate\": \"2024-01-15\",\n    \"arrivalDate\": \"2024-01-20\",\n    \"departureTime\": \"12:00\",\n    \"arrivalTime\": \"18:30\",\n    \"seats\": [\"A1\", \"A2\"],\n    \"amount\": 100,\n    \"currency\": \"usd\",\n    \"description\": \"Standard booking\",\n    \"token\": {\n      \"id\": \"tok_1234567890\",\n      \"card\": {\n        \"brand\": \"Visa\",\n        \"last4\": \"1234\",\n        \"exp_month\": 12,\n        \"exp_year\": 2025\n      }\n    }\n  },\n  \"clientSecret\": \"secret_key_for_client\",\n  \"_id\": \"659672367c09ae7b5d6e122e\",\n  \"__v\": 0\n\n}\n\n ```"
+					},
+					"response": []
+				},
+				{
+					"name": "Fetch Booking",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{BASE_URL}}/booking?uid=0UgSwLeMJ9Vs4NoTCLvexntpRTf2",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"booking"
+							],
+							"query": [
+								{
+									"key": "uid",
+									"value": "0UgSwLeMJ9Vs4NoTCLvexntpRTf2"
+								}
+							]
+						},
+						"description": "This endpoint retrieves booking details based on the provided user ID.\n\nThe request should be sent as an HTTP GET to {{BASE_URL}}/booking with the query parameter \"uid\" set to the user ID.\n\nThe response will have a status code of 200 and will include a JSON object with a \"success\" key indicating the success status, and a \"bookings\" array containing the booking details. Each booking object in the array will have various properties such as ID, uid, name, email, phone, age, gender, bus details, travel details, seats, amount, currency, description, and token.\n\nNote: No request body is required for this endpoint.\n\nExample response:\n\n``` json\n{\n    \"success\": true,\n    \"bookings\": [\n        {\n            \"_id\": \"6593bbaa9f59bda0ca8558e5\",\n            \"uid\": \"0UgSwLeMJ9Vs4NoTCLvexntpRTf2\",\n            \"name\": \"noreya noreya\",\n            \"email\": \"noreya8930@royalka.com\",\n            \"phone\": \"+919876543219\",\n            \"age\": 33,\n            \"gender\": \"male\",\n            \"busName\": \"tripura motors\",\n            \"origin\": \"deeg (bharatpur)\",\n            \"destination\": \"balotra (barmer)\",\n            \"departureDate\": \"2024-01-02T00:00:00.000Z\",\n            \"arrivalDate\": \"2024-01-06T00:00:00.000Z\",\n            \"departureTime\": \"2024-01-01T18:50:28.691Z\",\n            \"arrivalTime\": \"2024-01-02T11:53:28.692Z\",\n            \"seats\": [\n                \"A1\",\n                \"A8\",\n                \"B6\",\n                \"C4\",\n                \"D2\"\n            ],\n            \"amount\": 12345,\n            \"currency\": \"usd\",\n            \"description\": \"Payment for bus reservation from deeg (bharatpur) to balotra (barmer) on 2024-01-02T00:00:00.000Z at 2024-01-01T18:50:28.691Z for passenger noreya noreya.\",\n            \"token\": \"tok_1OU2R4SDctmq1t5tSB9jwQ3u\",\n            \"__v\": 0\n        }\n    ]\n}\n\n ```"
+					},
+					"response": []
+				}
+			],
+			"description": "Create new bookings, retrieve booking details, and manage user reservations."
+		},
+		{
+			"name": "Location",
+			"item": [
+				{
+					"name": "Fetch Locations",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{BASE_URL}}/location",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"location"
+							]
+						},
+						"description": "This endpoint makes an HTTP GET request to retrieve location information from the server. The request does not contain a request body. Upon a successful execution, the server responds with a status code of 200 and a JSON object containing a \"success\" key set to true, along with an array of \"locations\" objects. Each \"locations\" object contains an \"_id\" key and a nested \"locations\" array, which in turn contains \"district\" information.\n\nExample response:\n\n``` json\n{\n    \"success\": true,\n    \"locations\": [\n        {\n            \"_id\": \"657ff5b821c15dd750e19e4a\",\n            \"locations\": [\n                {\n                    \"district\": \"Jaipur Urban (Jaipur)\"\n                },\n                {\n                    \"district\": \"Jaipur Rural (Jaipur)\"\n                },\n                {\n                    \"district\": \"Kekri (Ajmer)\"\n                },\n                {\n                    \"district\": \"Sanchore (Jalore)\"\n                },\n                {\n                    \"district\": \"Khairthal (Alwar)\"\n                },\n                {\n                    \"district\": \"Anupgarh (Sriganganagar)\"\n                },\n                {\n                    \"district\": \"Gangapur City (Sawai Madhopur)\"\n                },\n                {\n                    \"district\": \"Neem ka thana (Sikar)\"\n                },\n                {\n                    \"district\": \"Phalodi (Jodhpur)\"\n                },\n                {\n                    \"district\": \"Dudu (Jaipur)\"\n                },\n                {\n                    \"district\": \"Beawar (Ajmer)\"\n                },\n                {\n                    \"district\": \"Didwana-Kuchaman (Nagaur)\"\n                },\n                {\n                    \"district\": \"Salumber (Udaipur)\"\n                },\n                {\n                    \"district\": \"Shahpura (Bhilwara)\"\n                },\n                {\n                    \"district\": \"Jodhpur Urban (Jodhpur)\"\n                },\n                {\n                    \"district\": \"Jodhpur Rural (Jodhpur)\"\n                },\n                {\n                    \"district\": \"Balotra (Barmer)\"\n                },\n                {\n                    \"district\": \"Deeg (Bharatpur)\"\n                }\n            ]\n        }\n    ]\n}\n\n ```"
+					},
+					"response": []
+				}
+			],
+			"description": "Access location-related APIs to retrieve information about different districts."
+		}
+	],
+	"variable": [
+		{
+			"key": "PORT",
+			"value": "5001"
+		},
+		{
+			"key": "BASE_URL",
+			"value": "http://localhost:"
+		}
+	]
+}
