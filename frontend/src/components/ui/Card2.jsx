@@ -66,7 +66,7 @@ const Card2 = (props) => {
     <div>
       <section
         className={`grid h-full ${
-          isBtnShow ? "grid-cols-4" : "grid-cols-1"
+          isBtnShow ? "grid-cols-1 sm:grid-cols-4" : "grid-cols-1"
         } border p-4 rounded-md shadow-sm bg-white relative`}
       >
         <section className="col-span-3 space-y-4">
@@ -132,7 +132,7 @@ const Card2 = (props) => {
           )}
         </section>
         {isBtnShow && (
-          <aside className="border-l col-span-1 p-4 flex flex-col items-center justify-center">
+          <aside className="sm:border-l col-span-1 p-4 flex flex-col items-center justify-center">
             <h6 className="text-gray-600">Trip Cost</h6>
             <h2 className="text-2xl font-semibold text-indigo-600 mb-4">
               &#8377;{fare}
