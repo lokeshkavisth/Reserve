@@ -3,7 +3,7 @@ const Location = require("../../models/location");
 const fetchLocations = async (req, res) => {
   try {
     const locations = await Location.find();
-    if (!locations) {
+    if (!locations || locations.length === 0) {
       return res
         .status(404)
         .json({ success: false, error: "No location found!" });
